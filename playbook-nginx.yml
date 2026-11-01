@@ -1,0 +1,30 @@
+---
+- name: Configure Nginx on Yandex Cloud VM
+  hosts: webservers
+  become: true
+  gather_facts: true
+
+  tasks:
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+
+    - name: Install nginx
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+
+    - name: Ensure nginx is running
+      ansible.builtin.service:
+        name: nginx
+        state: started
+        enabled: true
+
+    - name: Verify Nginx is installed
+      ansible.builtin.command: nginx -v
+      register: nginx_version
+      changed_when: false
+
+    - name: Show Nginx version
+      ansible.builtin.debug:
+        msg: "Nginx installed: {{ nginx_version.stderr }}"

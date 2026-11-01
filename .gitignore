@@ -1,0 +1,14 @@
+# Секреты
+key.json
+*.pem
+*.key
+.vault_pass
+
+# Terraform
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.backup
+
+# Сгенерированные файлы
+inventory.ini
