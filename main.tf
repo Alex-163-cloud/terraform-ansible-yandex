@@ -43,6 +43,18 @@ resource "yandex_compute_instance" "vm" {
   metadata = {
     ssh-keys = "ubuntu:${file("~/.ssh/id_rsa.pub")}"
   }
+
+
+lifecycle {
+    # 1. Защита от случайного удаления (например, terraform destroy)
+   # prevent_destroy = true
+
+    # 2. Сначала создаем новую ВМ, потом удаляем старую (Zero Downtime)
+    create_before_destroy = true
+
+    # 3. Игнорируем изменения метаданных, если их меняет облако
+    ignore_changes = [metadata]
+  }
 }
 
 # 3. Выводим публичный IP
